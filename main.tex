@@ -1,6 +1,8 @@
 \documentclass[11pt]{article}
 
 \usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{xcolor}
 
 %opening
 \title{Saddle Point Problems or Min-Max Problems}
@@ -50,14 +52,14 @@ In order to comply with the requirement to have a single \LaTeX\ file in the roo
 \section{On the Convergence of Single-Cell Stochastic Extra-Gradient Methods:}
 
 	\subsection{Problem Statement:}
-        Variational inequalities, especially in the context of machine learning models like generative adversarial networks (GANs), have become vital for handling complex optimization problems. The Extra-Gradient (EG) algorithm and its variants have shown optimal convergence rates for monotone variational inequalities, albeit at the cost of computational resources. To mitigate this, single-call stochastic extra-gradient methods have been introduced as surrogates. This paper delves into understanding and analyzing these single-call variants, aiming to establish their convergence properties, especially in the realm of non-monotone variational inequalities. The study explores both deterministic and stochastic scenarios, unraveling the intricacies of these algorithms in different contexts.
+        Landscape of the loss function in GANs does not resemble the minimization problem, but that of a min-max game which in our words could be called a \textbf{variational inequality}. They have gained significant attention in machine learning, offering a flexible framework beyond ordinary loss function minimization, particularly in generative adversarial networks (GANs) and deep learning systems. The optimal $O(1/t)$ convergence rate for solving smooth monotone variational inequalities is achieved by the Extra-Gradient (EG) algorithm and its variants. These methods require two projections and two oracle calls per iteration, making them costly compared to standard methods like Forward-Backward. Reducing this cost is the main goal of the current paper.
 	
 	\subsection{Main Idea of the Approach:}
         The primary focus of this research is to investigate and quantify the convergence behavior of single-call stochastic extra-gradient methods when solving variational inequalities. By understanding the underlying mechanisms of these algorithms, the paper aims to provide valuable insights into their applicability and efficiency, especially in the realm of non-monotone variational inequalities.
 	
 	\subsection{Theory and Background: }
  
-        Variational inequalities have gained significant attention in machine learning, offering a flexible framework beyond ordinary loss function minimization, particularly in generative adversarial networks (GANs) and deep learning systems. The optimal O(1/t) convergence rate for solving smooth monotone variational inequalities is achieved by the Extra-Gradient (EG) algorithm and its variants. These methods require two projections and two oracle calls per iteration, making them costly compared to standard methods like Forward-Backward. Several algorithms have been proposed to reduce these costs, especially in deep learning, where gradient calculations are expensive.
+        Variational inequalities, encompassing diverse problems like minimization, saddle-points, Nash equilibria, and fixed-point problems, serve as a foundational framework in optimization. The EG algorithm, with its variants, has been pivotal in solving monotone variational inequalities. However, the computational cost involved has led to the exploration of single-call variants, sparking a significant area of research. This paper delves into these single-call methods, studying their properties and convergence rates in both deterministic and stochastic scenarios.
 	
 		\subsubsection{Related Work: }
   
@@ -68,10 +70,11 @@ In order to comply with the requirement to have a single \LaTeX\ file in the roo
         In the context of variational inequalities, the Extra-Gradient algorithm involves two projections and oracle calls per iteration. Single-call variants like PEG, RG, and OG perform a single oracle call while approximating missing gradients differently. These algorithms converge at the optimal O(1/t) rate under certain assumptions.
 		
 		\subsubsection{Key Features: }
-  
-        - Variational inequalities provide a flexible framework in machine learning beyond traditional loss function minimization.
-        - Extra-Gradient and its variants achieve optimal O(1/t) convergence rates.
-        - Single-call extra-gradient methods, such as PEG, RG, and OG, approximate missing gradients with a single oracle call per iteration.
+        \begin{itemize}
+            \item Variational inequalities provide a flexible framework in machine learning beyond traditional loss function minimization.
+            \item Extra-Gradient and its variants achieve optimal O(1/t) convergence rates.
+            \item Single-call extra-gradient methods, such as PEG, RG, and OG, approximate missing gradients with a single oracle call per iteration.
+        \end{itemize}
 		
 		\subsubsection{Causes behind Good Performance: }
   
@@ -89,6 +92,12 @@ In order to comply with the requirement to have a single \LaTeX\ file in the roo
 	\subsection{Experiments and Results:}
  
         Experimental results demonstrate the efficiency of single-call extra-gradient methods in both deterministic and stochastic variational inequalities. These methods consistently outperform the traditional Extra-Gradient algorithm in terms of convergence speed, especially in scenarios where computational resources are limited.
+        \begin{figure}[h]
+            \centering
+            \includegraphics[scale=0.5]{pictures/pic1.png}
+            \caption{Illustration of the performance of EG and 1-EG in the (a priori non-monotone) saddle-point problem $\mathcal{L}(\theta, \phi) = 2 \epsilon_1 \theta^T A_1 \theta + \epsilon_2 (\theta^T A_2 \theta)^2 - 2 \theta_1 \phi^T B_1 \phi - \epsilon_2 (\phi^T B_2 \phi)^2 + 4\theta^T C \phi$ }
+            \label{fig:label}
+        \end{figure}
  
 	
 \section{Conclusion:}
