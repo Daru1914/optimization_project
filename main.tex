@@ -50,24 +50,46 @@ In order to comply with the requirement to have a single \LaTeX\ file in the roo
 \section{On the Convergence of Single-Cell Stochastic Extra-Gradient Methods:}
 
 	\subsection{Problem Statement:}
+        Variational inequalities, especially in the context of machine learning models like generative adversarial networks (GANs), have become vital for handling complex optimization problems. The Extra-Gradient (EG) algorithm and its variants have shown optimal convergence rates for monotone variational inequalities, albeit at the cost of computational resources. To mitigate this, single-call stochastic extra-gradient methods have been introduced as surrogates. This paper delves into understanding and analyzing these single-call variants, aiming to establish their convergence properties, especially in the realm of non-monotone variational inequalities. The study explores both deterministic and stochastic scenarios, unraveling the intricacies of these algorithms in different contexts.
 	
 	\subsection{Main Idea of the Approach:}
+        The primary focus of this research is to investigate and quantify the convergence behavior of single-call stochastic extra-gradient methods when solving variational inequalities. By understanding the underlying mechanisms of these algorithms, the paper aims to provide valuable insights into their applicability and efficiency, especially in the realm of non-monotone variational inequalities.
 	
-	\subsection{Theory and Background:}
+	\subsection{Theory and Background: }
+ 
+        Variational inequalities have gained significant attention in machine learning, offering a flexible framework beyond ordinary loss function minimization, particularly in generative adversarial networks (GANs) and deep learning systems. The optimal O(1/t) convergence rate for solving smooth monotone variational inequalities is achieved by the Extra-Gradient (EG) algorithm and its variants. These methods require two projections and two oracle calls per iteration, making them costly compared to standard methods like Forward-Backward. Several algorithms have been proposed to reduce these costs, especially in deep learning, where gradient calculations are expensive.
 	
-		\subsubsection{Related Work:}
+		\subsubsection{Related Work: }
+  
+        Existing research has explored various algorithms, such as Forward-Backward-Forward (FBF) and gradient extrapolation mechanisms like Popov's modified Arrow-Hurwicz algorithm, to reduce the number of oracle calls and projections. Among these, single-call extra-gradient methods, including Past Extra-Gradient (PEG), Reflected Gradient (RG), and Optimistic Gradient (OG), have gained prominence for their efficiency in approximating missing gradients while making a single oracle call per iteration.
 		
-		\subsubsection{Theoretical Framework:}
+		\subsubsection{Theoretical Framework: }
+  
+        In the context of variational inequalities, the Extra-Gradient algorithm involves two projections and oracle calls per iteration. Single-call variants like PEG, RG, and OG perform a single oracle call while approximating missing gradients differently. These algorithms converge at the optimal O(1/t) rate under certain assumptions.
 		
-		\subsubsection{Key Features:}
+		\subsubsection{Key Features: }
+  
+        - Variational inequalities provide a flexible framework in machine learning beyond traditional loss function minimization.
+        - Extra-Gradient and its variants achieve optimal O(1/t) convergence rates.
+        - Single-call extra-gradient methods, such as PEG, RG, and OG, approximate missing gradients with a single oracle call per iteration.
 		
-		\subsubsection{Causes behind Good Performance:}
+		\subsubsection{Causes behind Good Performance: }
+  
+        The performance of single-call extra-gradient methods is attributed to their ability to anticipate the landscape of the problem by approximating missing gradients while making only one oracle call per iteration. These methods achieve optimal convergence rates in both deterministic and stochastic variational inequalities under suitable conditions.
 		
-		\subsubsection{Improvements over Older Methods:}
+		\subsubsection{Improvements over Older Methods: }
+  
+        Single-call extra-gradient methods significantly reduce the computational cost associated with multiple oracle calls and projections. They retain the anticipatory properties of the original Extra-Gradient algorithm while making efficient use of oracle resources.
 	
-	\subsection{Essence of Proof:} %I don't like the name, rename if you have any good ideas
+	\subsection{Essence of Proof: }
+        
+        The proofs for the convergence rates of single-call extra-gradient methods involve intricate analyses. Techniques such as quasi-descent inequalities and probabilistic arguments are employed to establish convergence properties. For stochastic variational inequalities, careful consideration of noise realizations and conditional bias is necessary to prove convergence rates.
+ %I don't like the name, rename if you have any good ideas
 	
 	\subsection{Experiments and Results:}
+ 
+        Experimental results demonstrate the efficiency of single-call extra-gradient methods in both deterministic and stochastic variational inequalities. These methods consistently outperform the traditional Extra-Gradient algorithm in terms of convergence speed, especially in scenarios where computational resources are limited.
+ 
 	
 \section{Conclusion:}
 
