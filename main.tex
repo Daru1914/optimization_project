@@ -30,24 +30,92 @@ In order to comply with the requirement to have a single \LaTeX\ file in the roo
 \section{A Variational Inequality Perspective on Generative Adversarial Networks:}
 
 	\subsection{Problem Statement:}
+	Authors of the paper want to achieve a more stable and reliable training process for Generative adversarial networks (GANs). In pursuit of that goal they reformulate the GAN objective as a two-player game in the sense of game theory, and they address that game as a variational inequality problem (VIP). VIP framework encompasses traditional saddle-point optimization algorithms, so it is relevant towards our investigation of min-max problems. \\
+	
+	Once the GAN optimization problem is reformulated as VIP, the goal is to find the optimal set $\Omega$ that would verify the following equality: 
+	$$
+	\textrm{find } \omega^*\in\Omega \textrm{ such that } F(\omega^*)^T(\omega-\omega^*)\geq0,\textrm{ } \forall\omega\in\Omega,
+	$$
+	where $\omega=(\theta,\varphi),$  $\omega^*=(\theta^*,\varphi^*),$ $\Omega=\Theta\times\Phi,$ $F(\omega)=[\nabla_{\theta}\mathcal{L}_G(\theta,\varphi)\textrm{ }\nabla_{\varphi}\mathcal{L}_D(\theta,\varphi)]^T$. $G$, $D$ are respectively generator and discriminator in GAN, $(\theta,\varphi)$ are parameters of $D$ and $G$, $(\theta^*,\varphi^*)$ is a stationary point (non-negative gradient in any direction).
 	
 	\subsection{Main Idea of the Approach:}
+	
+	Main idea of the \textit{extrapolation from the past} technique is to optimize the existing \textit{extrapolation} technique by storing and re-using the extrapolated gradient, thereby requiring only one computation of the gradient per update, rather than two: \\
+	\textbf{Standard extrapolation:}
+	$$
+	\textrm{Compute extrapolated point: }\omega_{t+1/2}=P_{\Omega}[\omega_t-\eta F(\omega_{t-1/2})] $$
+	$$
+	\textrm{Perform update step: }\omega_{t+1}=P_{\Omega}[\omega_t-\eta F(\omega_{t+1/2})]\textrm{ and store: }F(\omega_{t+1/2})
+	$$
+	\textbf{Extrapolation from the past:}
+	$$
+	\textrm{Compute extrapolated point: }\omega_{t+1/2}=P_{\Omega}[\omega_t-\eta F(\omega_t)]
+	$$
+	$$
+	\textrm{Perform update step: }\omega_{t+1}=P_{\Omega}[\omega_t-\eta F(\omega_{t+1/2})]
+	$$
 	
 	\subsection{Theory and Background:}
 		
 		\subsubsection{Related Work:}
+		There are a multitude of VIP optimization methods studied in literature, which the authors used in order to develop their own. Two standard methods are the \textit{gradient method}(Bruck, 1977) and the \textit{extragradient method} (Korpelevich, 1976). More recent methods use \textit{uniform average} in \textit{averaging} techniques(Nedi\'c and Ozdaglar, 2009), which guarantees convergence for any bounded monotone operator with a $O(1/\sqrt{t})$ rate, and \textit{extragradient method} (Nesterov, 2007), which does not require averaging and converges at an even faster rate of $O(1/t)$. \\
+		
+		The main idea that was discovered by the authors of the paper in relation to VIP - \textit{extrapolation from the past} was also already discovered previously by Chiang et al. (2012, Alg. 1) for general online learning.
 		
 		\subsubsection{Theoretical Framework:}
+		In their work the authors use concepts from multiple different fields. Most importantly, they view the training of a GAN as a variational inequality, where the generator and discriminator aim to perform optimization in a game theory setting. They also cover stochastic optimization in their work, which was not done by many of the authors who preceded them. The solution presented in this paper is also dependent on stochastic gradient descent with averaging, extrapolation and extrapolation from the past.
 		
 		\subsubsection{Key Features:}
+		\begin{itemize}
+			\item The solution presented by the authors is guaranteed to sublinearly converge in most cases, unlike some of the older methods that were also covered in the paper.
+			\begin{figure}[h]
+				\centering
+				\includegraphics[scale=0.7]{pictures/pic2.png}
+				\label{fig:labe}
+			\end{figure}
+			\item Recognizing that GANs involve stochastic gradients computed on mini-batches of data, the solution accounts for the inherent randomness and uncertainty in the optimization process, differing from previous work on the subject.
+			\item The solution is not limited to a single type of GAN, and can be used with any architecture of the model of that type, making it versatile and widely applicable.
+		\end{itemize}
 		
 		\subsubsection{Causes behind Good Performance:}
+		Several factors are worth mentioning when talking about good performance of the solution:
+		\begin{itemize}
+			\item Solution guarantees fewer computations per iteration when compared to original extrapolation solution, so it is by definition more computationally efficient.
+			\item It is based upon an existing solution that was proven to work well, so as an improvement on it it is also guaranteed to perform at least as well.
+			\item It handles stochastic gradients, which makes it exceptionally well-suited for the purpose of GAN training. 
+		\end{itemize}
 		
 		\subsubsection{Improvements over Older Methods:}
+		Authors of the paper introduce a novel technique: \textit{extrapolation from the past}. Its improvement over the older \textit{extrapolation} technique is in requiring only one gradient descent computation per update, rather than two. \\
+		Furthermore, their newly-developed techniques achieve a $4-6\%$ better inception score and the Fr\'echet inception distance than Miyato et al. (2018), while using CIFAR-10 dataset with a WGAN-GP and a ResNet generator.
 	
-	\subsection{Essence of Proof:} %I don't like the name, rename if you have any good ideas
+	\subsection{Essence of Proof:}
+	
+	The essence of the proof for the method proposed in the paper lies in providing rigorous mathematical guarantees that the optimization algorithms will converge to a solution in the context of GAN training. The proof also relies on several assumptions: that function $F$ is strongly monotone and L-Lipschitz. If those assumptions are not fulfilled, then standard extrapolation technique has to be used, as it is guaranteed to converge linearly for a bilinear game.
 	
 	\subsection{Experiments and Results:}
+	Authors structured their experiments in the following way: they compared the following optimization algorithms: baselines are SGD and Adam using either simultaneous updates on the generator and on the discriminator (denoted SimAdam and SimSGD) or k updates on the discriminator alternating with 1 update on the generator (denoted AltSGD{k} and AltAdam{k}). (simultaneous and alternating updates are different settings of the averaging technique). Variants that use extrapolation are denoted ExtraSGD and ExtraAdam (Alg. 4). Variants using extrapolation from the past are PastExtraSGD and PastExtraAdam (Alg. 4). They also presented results using as output the averaged iterates, adding Avg as a prefix of the algorithm name when we use (uniform) averaging.
+	\begin{enumerate}
+		\item The first test was conducted on a simple $(n=10^3,d=10^3)$ finite sum bilinear objective constrainted to $[-1,1]^d$, where AvgAltSGD1 and AvgPastExtraSGD performed the best:
+		\begin{figure}[!htb]
+			\centering
+			\includegraphics[scale=1]{pictures/pic3.png}
+			\label{fig:la}
+		\end{figure}
+		\item The second test was conducted in the context of GAN training. Two different GAN architectures were used: WGAN and WGAN-GP. Only Adam version of gradient descent was evaluated. \\
+		\begin{figure}[!htb]
+			\centering
+			\includegraphics[scale=1]{pictures/pic4.png}
+			\label{fig:lab}
+		\end{figure}
+		\begin{figure}[!htb]
+			\centering
+			\includegraphics[scale=1]{pictures/pic5.png}
+			\label{fig:l}
+		\end{figure}
+		
+		As we can see below, for both tasks, using an extrapolation step and averaging with Adam (ExtraAdam) outperformed all other methods. Combining ExtraAdam with averaging yields results that improve significantly over the previous state-of-the-art IS and FID.
+	\end{enumerate}
 
 \section{On the Convergence of Single-Cell Stochastic Extra-Gradient Methods:}
 
@@ -87,7 +155,6 @@ In order to comply with the requirement to have a single \LaTeX\ file in the roo
 	\subsection{Essence of Proof: }
         
         The proofs for the convergence rates of single-call extra-gradient methods involve intricate analyses. Techniques such as quasi-descent inequalities and probabilistic arguments are employed to establish convergence properties. For stochastic variational inequalities, careful consideration of noise realizations and conditional bias is necessary to prove convergence rates.
- %I don't like the name, rename if you have any good ideas
 	
 	\subsection{Experiments and Results:}
  
@@ -101,5 +168,5 @@ In order to comply with the requirement to have a single \LaTeX\ file in the roo
  
 	
 \section{Conclusion:}
-
+	Both techniques that we have covered have used theoretical transformation of the problem to variational inequality problem, and then focused on optimizing the objective in the new terms. Both of them have managed to achieve better computational efficiency than older algorithms, and achieved best results during the evaluation. Both of the papers focused on this problem in order to improve GAN training. However, the experimentation of the authors of the first paper was more rigorous - more expansive tests were conducted using different settings to prove that their method works well.
 \end{document}
